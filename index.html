@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- // tells the browser what type of document to expect // html tag is a container for all other elements -->
+
+<!--place comments here-->
+<html lang="en">
+  <!-- // head tag is where are your metadata is specified. // metadat is data about data. -->
+  <head>
+    <!-- // charset specifies the characters, symbols, and punctiontion the site will use -->
+    <meta charset="UTF-8" />
+    <!-- // makes sure that your website will scale properly on all devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- // this wil be the title of document and it will be displayed on the tab -->
+    <title>Spotifake</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost&display=swap"
+      rel="stylesheet"
+    />
+    <!-- // specify the external stylesheet that will be used -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <h1>Select a song!</h1>
+    <label class="file-upload">
+      <input type="file" name="songs" multiple />
+      Click here to upload songs 🎶
+    </label>
+    <audio src=""></audio>
+    <div id="buttons">
+      <button id="prev">⏮</button>
+      <button id="play">▶️</button>
+      <button id="next">⏭</button>
+    </div>
+  </body>
+  <script>
+    // Place JS here
+    // let title = document.querySelector("h1");
+    // title.onclick = changeTitle;
+
+    // function changeTitle() {
+    //   title.innerText = "Hi, I am using the DOM";
+    // }
+
+    let songs = [];
+    let currentSong = 0;
+    const colors = [
+      "Aqua",
+      "Aquamarine",
+      "Blue",
+      "BlueViolet",
+      "Chartreuse",
+      "Coral",
+      "Crimson",
+      "Cyan",
+      "DarkBlue",
+      "DarkMagenta",
+      "DarkOrange",
+      "DarkOrchid",
+      "DarkRed",
+      "DeepPink",
+      "FireBrick",
+      "Fuchsia",
+      "GreenYellow",
+      "Lime"
+    ];
+
+    const title = document.querySelector("h1");
+    const input = document.querySelector("input");
+    const label = document.querySelector("label");
+    const prev = document.querySelector("#prev");
+    const play = document.querySelector("#play");
+    const next = document.querySelector("#next");
+    const player = document.querySelector("audio");
+    player.volume = 0.3;
+
+    input.onchange = getSongs;
+    next.onclick = nextSong;
+    prev.onclick = prevSong;
+
+    function getSongs(event) {
+      songs = event.target.files;
+      playSong();
+      label.innerText = songs[currentSong].name.slice(0, -4); // change label to the name of the song
+      title.innerText = "Spotifake Player 🤘"; // change title
+    }
+
+    function playSong() {
+      let song = URL.createObjectURL(songs[currentSong]); // get temporary url for mp3 file
+      label.innerText = songs[currentSong].name.slice(0, -4);
+      label.style.color = colors[Math.floor(Math.random() * songs.length)]; // 0-0.99 // 0-2.99
+      label.style.backgroundColor =
+        colors[Math.floor(Math.random() * songs.length)]; // 0-0.99 // 0-2.99
+      player.setAttribute("src", song);
+      player.play();
+      play.innerText = "⏸";
+      play.onclick = pause;
+    }
+    // play.onclick = pause(); --> executes the function right away when the page loads
+    // play.onclick = pause; this will only execute when the user clicks
+
+    function pause() {
+      play.innerText = "▶️";
+      player.pause();
+      play.onclick = playCurrent;
+    }
+
+    function playCurrent() {
+      play.innerText = "⏸";
+      player.play();
+      play.onclick = pause;
+    }
+
+    function nextSong() {
+      if (currentSong + 1 < songs.length) {
+        // songs.length = 3 but my hightest index is actualy 2
+        currentSong++; // currentSong = currentSong + 1 OR currentSong += 1
+        playSong();
+      }
+    }
+
+    function prevSong() {
+      if (currentSong - 1 >= 0) {
+        currentSong--; // currentSong = currentSong - 1 OR currentSong -= 1
+        playSong();
+      }
+    }
+  </script>
+</html>
